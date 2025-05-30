@@ -1,10 +1,13 @@
-@import "tailwindcss";
+/* 1. Importa todo Tailwind (preflight, theme, components y utilities) */
+@import "tailwindcss"; 
 
+/* 2. Variables de color y tipografía */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* 3. Tema inline (opcional, si quieres usar @theme para personalizar) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,6 +15,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* 4. Modo oscuro */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,6 +23,7 @@
   }
 }
 
+/* 5. Estilos globales adicionales */
 body {
   background: var(--background);
   color: var(--foreground);
