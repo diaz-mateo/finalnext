@@ -1,4 +1,5 @@
-// src/data/products.js
+
+/*// src/data/products.js
 export const products = [
   {
     id: 'psicologia',
@@ -42,4 +43,4 @@ export const products = [
     price: 130,
     image: '/images/emdr.jpg',
   },
-];
+];*/

@@ -1,26 +1,40 @@
-// src/app/product/[id]/page.js
-'use client';
+import Image from "next/image";
+import ProductDetailClient from "../../../components/ProductDetailClient";
 
-import { useState } from 'react';
-import { products } from '../../../data/products';
-import Image from 'next/image';
-import QuantitySelector from '../../../components/QuantitySelector';
-import Button from '../../../components/Button';
+// 1) Función para obtener todos los IDs
+export async function generateStaticParams() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
+    { next: { revalidate: 60 } }
+  );
+  const products = await res.json();
 
-export default function ProductPage({ params }) {
-  const product = products.find(p => p.id === params.id);
+  return products.map((p) => ({ id: p.id }));
+}
+
+// 2) Obtener un producto por ID
+async function fetchProductById(id) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${id}`,
+    { next: { revalidate: 60 } }
+  );
+  if (!res.ok) return null;
+  return res.json();
+}
+
+// 3) Server Component
+export default async function ProductPage({ params }) {
+  const { id } = await params; // 👈 Corregido según Next.js 15
+  const product = await fetchProductById(id);
 
   if (!product) {
     return <h1 className="text-2xl">Servicio no encontrado.</h1>;
   }
 
-  const [selectedQty, setSelectedQty] = useState(1);
+  return <ProductDetailServer product={product} />;
+}
 
-  const handleAdd = () => {
-    // Aquí podrías conectar con tu lógica de carrito
-    alert(`Añadido ${selectedQty} unidad(es) de ${product.name} al carrito`);
-  };
-
+function ProductDetailServer({ product }) {
   return (
     <article className="max-w-2xl mx-auto space-y-6">
       <Image
@@ -30,20 +44,13 @@ export default function ProductPage({ params }) {
         height={400}
         className="rounded object-cover"
       />
-
       <div className="space-y-4">
         <h1 className="text-4xl font-bold">{product.name}</h1>
         <p className="text-gray-700">{product.description}</p>
         <p className="text-blue-500 text-2xl font-semibold">
           S/ {product.price}
         </p>
-
-        <div className="flex items-center space-x-4">
-          <QuantitySelector onChange={setSelectedQty} />
-          <Button onClick={handleAdd}>
-            Añadir al carrito
-          </Button>
-        </div>
+        <ProductDetailClient product={product} />
       </div>
     </article>
   );
