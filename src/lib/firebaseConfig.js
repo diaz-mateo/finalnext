@@ -1,7 +1,7 @@
 // src/lib/firebaseConfig.js
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth"; // ✅ Necesario para login
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDbmDvXU9qAa7EzNjz156eNnJhMvOKA_ng",
