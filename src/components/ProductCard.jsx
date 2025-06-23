@@ -1,3 +1,4 @@
+// src/components/ProductCard.jsx
 "use client";
 
 import Image from "next/image";
@@ -10,13 +11,15 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="border rounded p-4 shadow hover:shadow-lg transition flex flex-col">
-      <Image
-        src={product.image}
-        alt={product.name}
-        width={400}
-        height={250}
-        className="rounded mb-4 object-cover"
-      />
+<div className="w-full h-48 relative mb-4">
+  <Image
+    src={product.image}
+    alt={product.name}
+    fill
+    className="rounded object-cover"
+    sizes="(max-width: 768px) 100vw, 33vw"
+  />
+</div>
       <h3 className="text-xl font-semibold">{product.name}</h3>
       <p className="text-gray-600 flex-grow">
         {product.description ?? "Sin descripción disponible."}

@@ -3,9 +3,19 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import { CartProvider } from "../context/CartContext";
 
+/** @type {import('next').Metadata} */
 export const metadata = {
   title: "Harmony Psicoterapia",
   description: "Terapias que sanan con Firebase y Next.js",
+  alternates: {
+    canonical: "https://tu-dominio.vercel.app",
+  },
+};
+
+/** @type {import('next').Viewport} */
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {

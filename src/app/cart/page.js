@@ -1,41 +1,18 @@
-// src/app/cart/page.js
 "use client";
 
 import Image from "next/image";
 import { useCart } from "../../context/CartContext";
 import Button from "../../components/Button";
-import { db } from "../../lib/firebaseConfig";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+  const router = useRouter();
   const { items, removeItem, updateQuantity, clearCart } = useCart();
 
   const total = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-
-  const handleCheckout = async () => {
-    try {
-      // 1. Guardar orden en Firestore
-      await addDoc(collection(db, "orders"), {
-        userId: "user1", // puedes cambiar esto cuando uses auth
-        items,
-        total,
-        createdAt: serverTimestamp(),
-      });
-
-      // 2. Vaciar carrito
-      clearCart();
-
-      // 3. Confirmación (puedes mostrar una notificación si quieres)
-      alert("¡Compra realizada con éxito!");
-
-    } catch (error) {
-      console.error("Error al finalizar compra:", error);
-      alert("Hubo un error al procesar la compra.");
-    }
-  };
 
   if (items.length === 0) {
     return (
@@ -92,7 +69,7 @@ export default function CartPage() {
         <p className="text-2xl font-bold">Total: S/ {total}</p>
         <div className="flex gap-4">
           <Button onClick={clearCart}>Vaciar carrito</Button>
-          <Button onClick={handleCheckout}>Finalizar compra</Button>
+          <Button onClick={() => router.push("/checkout")}>Finalizar compra</Button>
         </div>
       </div>
     </section>

@@ -24,7 +24,7 @@ async function fetchProductById(id) {
 
 // 3) Server Component
 export default async function ProductPage({ params }) {
-  const { id } = await params; // 👈 Corregido según Next.js 15
+  const { id } = await params; // 👈 Next.js 15
   const product = await fetchProductById(id);
 
   if (!product) {
@@ -34,6 +34,7 @@ export default async function ProductPage({ params }) {
   return <ProductDetailServer product={product} />;
 }
 
+// 4) Server-rendered product display
 function ProductDetailServer({ product }) {
   return (
     <article className="max-w-2xl mx-auto space-y-6">
@@ -47,9 +48,16 @@ function ProductDetailServer({ product }) {
       <div className="space-y-4">
         <h1 className="text-4xl font-bold">{product.name}</h1>
         <p className="text-gray-700">{product.description}</p>
+
         <p className="text-blue-500 text-2xl font-semibold">
           S/ {product.price}
         </p>
+
+        {/* 👇 Mostrar el stock disponible */}
+        <p className="text-sm text-gray-500">
+          Stock disponible: {product.stock ?? 'No especificado'}
+        </p>
+
         <ProductDetailClient product={product} />
       </div>
     </article>
